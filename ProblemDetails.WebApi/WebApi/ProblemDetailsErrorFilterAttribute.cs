@@ -19,7 +19,7 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
     ///   the returned <see cref="ProblemDetails"/> object if the <see cref="HttpRequestContext.IncludeErrorDetail"/> 
     ///   property for the request is <see langword="true"/>.
     /// </remarks>
-    public class ProblemDetailsErrorFilter : ExceptionFilterAttribute {
+    public class ProblemDetailsErrorFilterAttribute : ExceptionFilterAttribute {
 
         /// <summary>
         /// The <see cref="ProblemDetailsFactory"/> to use.

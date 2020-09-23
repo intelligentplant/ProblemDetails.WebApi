@@ -14,7 +14,7 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
     /// Web API action filter that returns <see cref="ProblemDetails"/> responses for actions that 
     /// return non-good status codes.
     /// </summary>
-    public class ProblemDetailsActionFilter : ActionFilterAttribute {
+    public class ProblemDetailsActionFilterAttribute : ActionFilterAttribute {
 
         /// <summary>
         /// The <see cref="ProblemDetailsFactory"/> to use.

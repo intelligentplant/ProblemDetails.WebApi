@@ -25,8 +25,8 @@ namespace System.Web.Http {
                 throw new ArgumentNullException(nameof(httpConfiguration));
             }
 
-            httpConfiguration.Filters.Add(new ProblemDetailsErrorFilter());
-            httpConfiguration.Filters.Add(new ProblemDetailsActionFilter());
+            httpConfiguration.Filters.Add(new ProblemDetailsErrorFilterAttribute());
+            httpConfiguration.Filters.Add(new ProblemDetailsActionFilterAttribute());
         }
 
     }
