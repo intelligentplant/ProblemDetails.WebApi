@@ -119,7 +119,7 @@ namespace IntelligentPlant.ProblemDetails {
         /// </param>
         private void ApplyProblemDetailsDefaults(IOwinContext httpContext, ProblemDetails problemDetails, int statusCode) {
             problemDetails.Status ??= statusCode;
-            problemDetails.Instance ??= httpContext.Request.Path.ToString();
+            problemDetails.Instance ??= string.Concat(httpContext.Request.PathBase, httpContext.Request.Path);
 
             var clientErrorMapping = new Dictionary<int, ClientErrorData>();
             ClientErrorDataDefaults.ApplyDefaults(clientErrorMapping);
