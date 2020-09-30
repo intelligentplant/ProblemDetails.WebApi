@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
+    <AssemblyName>IntelligentPlant.ProblemDetails.WebApi</AssemblyName>
     <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
