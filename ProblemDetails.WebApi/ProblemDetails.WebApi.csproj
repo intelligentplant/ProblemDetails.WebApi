@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/intelligentplant/ProblemDetails.WebApi</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <Choose>
