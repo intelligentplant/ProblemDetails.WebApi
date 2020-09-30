@@ -13,6 +13,26 @@
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
+  <Choose>
+    <When Condition=" $([System.DateTime]::UtcNow.Year) > 2020 ">
+      <PropertyGroup>
+        <Copyright>Copyright © 2020-$([System.DateTime]::UtcNow.Year) $(Company)</Copyright>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <Copyright>Copyright © 2020 $(Company)</Copyright>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
