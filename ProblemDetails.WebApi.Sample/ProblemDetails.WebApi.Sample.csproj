@@ -1,8 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" TreatAsLocalProperty="SignOutput">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <SignOutput>false</SignOutput>
   </PropertyGroup>
 
   <ItemGroup>
