@@ -3,9 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net462</TargetFramework>
     <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
-    <PackageId>IntelligentPlant.ProblemDetails.WebApi</PackageId>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <Authors>Intelligent Plant</Authors>
+    <Company>Intelligent Plant Ltd.</Company>
+    <PackageId>IntelligentPlant.ProblemDetails.WebApi</PackageId>
+    <PackageProjectUrl>https://github.com/intelligentplant/ProblemDetails.WebApi</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
