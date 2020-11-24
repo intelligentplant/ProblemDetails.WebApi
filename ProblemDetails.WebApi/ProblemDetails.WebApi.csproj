@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net45</TargetFramework>
     <AssemblyName>IntelligentPlant.ProblemDetails.WebApi</AssemblyName>
     <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
     <LangVersion>8.0</LangVersion>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/intelligentplant/ProblemDetails.WebApi</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <NeutralLanguage>en</NeutralLanguage>
-    <Version>1.0.1</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <Choose>
