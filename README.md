@@ -40,3 +40,31 @@ public void Configuration(IAppBuilder app) {
     app.UseWebApi(config);
 }
 ```
+
+
+## Manually Creating Problem Details Responses
+
+The `IntelligentPlant.ProblemDetails.WebApi` namespace contains extension methods for the `ApiController` type to allow direct creation of responses containing problem details objects in API controller methods, allowing you to return a problem details response that is appropriate for the exception that occurred. For example:
+
+```csharp
+[HttpGet]
+[Route("greet")]
+public async Task Greet(string? name = null, CancellationToken cancellationToken = default) {
+    try {
+        var result = await ProcessGreeting(Request.GetOwinContext(), name, cancellationToken).ConfigureAwait(false);
+        return Ok(result);
+    }
+    catch (ArgumentException e) {
+        return this.CreateProblemDetailsResponse(statusCode: HttpStatusCode.BadRequest, detail: e.Message);
+    }
+    catch (System.Security.SecurityException e) {
+        return this.CreateProblemDetailsResponse(statusCode: HttpStatusCode.Forbidden, detail: e.Message);
+    }
+    catch (System.ComponentModel.DataAnnotations.ValidationException e) {
+        return this.CreateValidationProblemDetailsResponse(e);
+    }
+    catch (Exception e) {
+        return this.CreateServerErrorProblemDetailsResponse(e);
+    }
+}
+```

@@ -27,16 +27,7 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
             // Prior to executing any action, ensure that the model state is valid and return a 
             // 400 response containing a ProblemDetails object if it is not.
             if (!actionContext.ModelState.IsValid) {
-                actionContext.Response = actionContext.Request.CreateResponse(
-                    HttpStatusCode.BadRequest,
-                    _factory.CreateValidationProblemDetails(
-                        actionContext.Request.GetOwinContext(),
-                        actionContext.ModelState,
-                        detail: Resources.ValidationProblemDescription_Details
-                    ),
-                    new JsonMediaTypeFormatter(),
-                    ClientErrorDataDefaults.MediaType
-                );
+                actionContext.Response = actionContext.Request.CreateValidationProblemDetailsResponse(actionContext.ModelState, _factory);
             }
         }
 
@@ -70,15 +61,10 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
                 }
             }
 
-            actionExecutedContext.Response = actionExecutedContext.Request.CreateResponse(
-                actionExecutedContext.Response!.StatusCode,
-                _factory.CreateProblemDetails(
-                    actionExecutedContext.Request.GetOwinContext(), 
-                    (int) actionExecutedContext.Response.StatusCode,
-                    detail: detail
-                ),
-                new JsonMediaTypeFormatter(),
-                ClientErrorDataDefaults.MediaType
+            actionExecutedContext.Response = actionExecutedContext.Request.CreateProblemDetailsResponse(
+                statusCode: actionExecutedContext.Response!.StatusCode,
+                detail: detail,
+                factory: _factory
             );
         }
 

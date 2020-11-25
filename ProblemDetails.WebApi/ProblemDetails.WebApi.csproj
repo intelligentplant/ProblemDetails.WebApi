@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <Choose>
-    <When Condition=" $([System.DateTime]::UtcNow.Year) > 2020 ">
+    <When Condition=" $([System.DateTime]::UtcNow.Year) &gt; 2020 ">
       <PropertyGroup>
         <Copyright>Copyright © 2020-$([System.DateTime]::UtcNow.Year) $(Company)</Copyright>
       </PropertyGroup>
@@ -42,6 +42,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations"/>
   </ItemGroup>
 
   <ItemGroup>

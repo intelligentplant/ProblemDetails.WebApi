@@ -4,14 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 
+using IntelligentPlant.ProblemDetails.WebApi;
+
 namespace ProblemDetails.WebApi.Sample.Controllers {
-    
+
     [RoutePrefix("example")]
     public class ExampleController : ApiController {
 
@@ -54,6 +53,53 @@ namespace ProblemDetails.WebApi.Sample.Controllers {
         [HttpGet]
         [Route("model-validation")]
         public IHttpActionResult ModelValidation([FromUri] Model model) {
+            return Ok();
+        }
+
+
+        [HttpGet]
+        [Route("create-direct")]
+        public IHttpActionResult CreateDirect() {
+            return this.CreateProblemDetailsResponse(HttpStatusCode.BadRequest, detail: "Problem details was directly created");
+        }
+
+
+        [HttpGet]
+        [Route("create-from-error")]
+        public IHttpActionResult CreateFromError(bool? detail = null) {
+            try {
+                throw new Exception("An error occurred!");
+            }
+            catch (Exception e) {
+                return this.CreateServerErrorProblemDetailsResponse(e, detail);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("create-from-validation-error")]
+        public IHttpActionResult CreateFromValidationError() {
+            var model = new Model();
+            try {
+                Validator.ValidateObject(model, new ValidationContext(model), true);
+            }
+            catch (ValidationException e) {
+                return this.CreateValidationProblemDetailsResponse(e);
+            }
+
+            return Ok();
+        }
+
+
+        [HttpGet]
+        [Route("create-from-validation-result")]
+        public IHttpActionResult CreateFromValidationResult() {
+            var model = new Model();
+            var errors = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(model, new ValidationContext(model), errors, true)) {
+                return this.CreateValidationProblemDetailsResponse(errors);
+            }
+
             return Ok();
         }
 

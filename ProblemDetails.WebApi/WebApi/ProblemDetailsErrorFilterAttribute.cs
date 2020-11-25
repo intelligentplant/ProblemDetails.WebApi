@@ -32,31 +32,19 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
             // Make a special case for HttpResponseException, as this can be thrown by 
             // controllers for any non-good status code.
             if (actionExecutedContext.Exception is HttpResponseException responseException) {
-                actionExecutedContext.Response = actionExecutedContext.Request.CreateResponse(
+                actionExecutedContext.Response = actionExecutedContext.Request.CreateProblemDetailsResponse(
                     responseException.Response.StatusCode,
-                    _factory.CreateProblemDetails(
-                        actionExecutedContext.Request.GetOwinContext(),
-                        (int) responseException.Response.StatusCode
-                    ),
-                    new JsonMediaTypeFormatter(),
-                    ClientErrorDataDefaults.MediaType
+                    factory: _factory
                 );
                 return;
             }
 
             // Otherwise, we are returning a 500 error. We will include the exception detail in the 
             // ProblemDetails instance only if we are allowed to according to the request context.
-            actionExecutedContext.Response = actionExecutedContext.Request.CreateResponse(
-                HttpStatusCode.InternalServerError,
-                _factory.CreateServerErrorProblemDetails(
-                    actionExecutedContext.Request.GetOwinContext(),
-                    actionExecutedContext.ActionContext.RequestContext.IncludeErrorDetail
-                        ? actionExecutedContext.Exception
-                        : null,
-                    (int) HttpStatusCode.InternalServerError
-                ),
-                new JsonMediaTypeFormatter(),
-                ClientErrorDataDefaults.MediaType
+            actionExecutedContext.Response = actionExecutedContext.Request.CreateServerErrorProblemDetailsResponse(
+                actionExecutedContext.Exception,
+                actionExecutedContext.ActionContext.RequestContext.IncludeErrorDetail,
+                factory: _factory
             );
         }
 
