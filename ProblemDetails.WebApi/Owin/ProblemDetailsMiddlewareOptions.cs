@@ -27,7 +27,7 @@ namespace IntelligentPlant.ProblemDetails.Owin {
         /// for an unhandled exception in the OWIN pipeline. Return <see langword="null"/> to 
         /// rethrow the unhandled exception.
         /// </summary>
-        public Func<Exception, ProblemDetailsFactory, ProblemDetails?>? ExceptionHandler { get; set; }
+        public Func<IOwinContext, Exception, ProblemDetailsFactory, ProblemDetails?>? ExceptionHandler { get; set; }
 
     }
 }

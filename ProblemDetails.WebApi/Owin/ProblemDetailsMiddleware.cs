@@ -87,7 +87,7 @@ namespace IntelligentPlant.ProblemDetails.Owin {
                     await WriteProblemDetailsToStream(problemDetails, response, responseBodyStream).ConfigureAwait(false);
                 }
                 catch (Exception e) {
-                    var errorDetails = _options.ExceptionHandler?.Invoke(e, ProblemDetailsFactory.Default);
+                    var errorDetails = _options.ExceptionHandler?.Invoke(context, e, ProblemDetailsFactory.Default);
                     if (errorDetails == null) {
                         // No problem details provided; rethrow the exception.
                         throw;
