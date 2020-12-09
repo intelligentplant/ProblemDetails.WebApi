@@ -42,7 +42,7 @@ public void Configuration(IAppBuilder app) {
 ```
 
 
-## Manually Creating Problem Details Responses
+## Manually Creating Problem Details Responses in API Controllers
 
 The `IntelligentPlant.ProblemDetails.WebApi` namespace contains extension methods for the `ApiController` type to allow direct creation of responses containing problem details objects in API controller methods, allowing you to return a problem details response that is appropriate for the exception that occurred. For example:
 
@@ -67,4 +67,31 @@ public async Task Greet(string? name = null, CancellationToken cancellationToken
         return this.CreateServerErrorProblemDetailsResponse(e);
     }
 }
+```
+
+
+## Handling Exceptions in the OWIN Pipeline
+
+It is also possible to generate problem details responses from unhandled exceptions in the OWIN pipeline. To do this, you can assign a callback function to the `ExceptionHandler` property on the `ProblemDetailsMiddlewareOptions` class:
+
+```csharp
+public void Configuration(IAppBuilder app) {
+    // We only want to return a problem details response on API routes.
+    app.UseProblemDetails(new ProblemDetailsMiddlewareOptions() {
+        IncludePaths = new [] {
+            new PathString("/api")
+        },
+        ExceptionHandler = ProblemDetailsErrorHandler
+    });
+}
+
+
+private static ProblemDetails? ProblemDetailsErrorHandler(IOwinContext context, Exception error, ProblemDetailsFactory factory) {
+    if (error is System.Security.SecurityException) {
+        return factory.CreateProblemDetails(context, 403);
+    }
+
+    return null;
+}
+
 ```
