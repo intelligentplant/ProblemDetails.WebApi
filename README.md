@@ -91,6 +91,7 @@ private static ProblemDetails? ProblemDetailsErrorHandler(IOwinContext context, 
         return factory.CreateProblemDetails(context, 403);
     }
 
+    // Return null to rethrow the unhandled exception.
     return null;
 }
 
