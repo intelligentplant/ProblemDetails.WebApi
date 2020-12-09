@@ -69,12 +69,12 @@ namespace IntelligentPlant.ProblemDetails.Owin {
                     // Let the inner middleware handle the request.
                     await Next.Invoke(context).ConfigureAwait(false);
 
-                    if (context.Response.StatusCode < 400 || context.Response.StatusCode > 599) {
+                    if (response.StatusCode < 400 || response.StatusCode > 599) {
                         // We only care about error status codes.
                         return;
                     }
 
-                    if (context.Response.ContentType?.StartsWith(ClientErrorDataDefaults.MediaType, StringComparison.OrdinalIgnoreCase) ?? false) {
+                    if (response.ContentType?.StartsWith(ClientErrorDataDefaults.MediaType, StringComparison.OrdinalIgnoreCase) ?? false) {
                         // The response already contains a problem details object.
                         return;
                     }
@@ -83,25 +83,17 @@ namespace IntelligentPlant.ProblemDetails.Owin {
                     // existing response data that has been written to the buffer.
                     copyFromBuffer = false;
 
-                    // Create a new buffer, and then create and serialize a problem details object 
-                    // into the new buffer.
-                    using (var ms = new MemoryStream()) {
-                        var problemDetails = ProblemDetailsFactory.Default.CreateProblemDetails(context, context.Response.StatusCode);
-                        var content = new ObjectContent(
-                            problemDetails.GetType(),
-                            problemDetails,
-                            new JsonMediaTypeFormatter(),
-                            ClientErrorDataDefaults.MediaType
-                        );
-                        await content.CopyToAsync(ms).ConfigureAwait(false);
-
-                        // Now set the content type and content length on the response, and copy 
-                        // the content of the new buffer into the original response stream.
-                        response.ContentType = content.Headers.ContentType.ToString();
-                        response.ContentLength = ms.Length;
-                        ms.Position = 0;
-                        await ms.CopyToAsync(responseBodyStream).ConfigureAwait(false);
+                    var problemDetails = ProblemDetailsFactory.Default.CreateProblemDetails(context, response.StatusCode);
+                    await WriteProblemDetailsToStream(problemDetails, response, responseBodyStream).ConfigureAwait(false);
+                }
+                catch (Exception e) {
+                    var errorDetails = _options.ExceptionHandler?.Invoke(e, ProblemDetailsFactory.Default);
+                    if (errorDetails == null) {
+                        // No problem details provided; rethrow the exception.
+                        throw;
                     }
+
+                    await WriteProblemDetailsToStream(errorDetails, response, responseBodyStream).ConfigureAwait(false);
                 }
                 finally {
                     if (copyFromBuffer) {
@@ -114,6 +106,43 @@ namespace IntelligentPlant.ProblemDetails.Owin {
                     // Finally, we need to restore the orignal response stream.
                     response.Body = responseBodyStream;
                 }
+            }
+        }
+
+
+        /// <summary>
+        /// Writes the specified problem details object to the HTTP response stream.
+        /// </summary>
+        /// <param name="problemDetails">
+        ///   The problem details.
+        /// </param>
+        /// <param name="response">
+        ///   The HTTP response.
+        /// </param>
+        /// <param name="stream">
+        ///   The destination response stream.
+        /// </param>
+        /// <returns>
+        ///   A <see cref="Task"/> that will perform the write.
+        /// </returns>
+        private async Task WriteProblemDetailsToStream(ProblemDetails problemDetails, IOwinResponse response, Stream stream) {
+            // Create a new buffer, and then create and serialize a problem details object 
+            // into the new buffer.
+            using (var ms = new MemoryStream()) {
+                var content = new ObjectContent(
+                    problemDetails.GetType(),
+                    problemDetails,
+                    new JsonMediaTypeFormatter(),
+                    ClientErrorDataDefaults.MediaType
+                );
+                await content.CopyToAsync(ms).ConfigureAwait(false);
+
+                // Now set the content type and content length on the response, and copy 
+                // the content of the new buffer into the original response stream.
+                response.ContentType = content.Headers.ContentType.ToString();
+                response.ContentLength = ms.Length;
+                ms.Position = 0;
+                await ms.CopyToAsync(stream).ConfigureAwait(false);
             }
         }
 
