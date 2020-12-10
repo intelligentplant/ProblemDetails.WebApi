@@ -83,16 +83,19 @@ namespace IntelligentPlant.ProblemDetails.Owin {
                     // existing response data that has been written to the buffer.
                     copyFromBuffer = false;
 
-                    var problemDetails = ProblemDetailsFactory.Default.CreateProblemDetails(context, response.StatusCode);
+                    var problemDetails = (_options.Factory ?? ProblemDetailsFactory.Default).CreateProblemDetails(context, response.StatusCode);
                     await WriteProblemDetailsToStream(problemDetails, response, responseBodyStream).ConfigureAwait(false);
                 }
                 catch (Exception e) {
-                    var errorDetails = _options.ExceptionHandler?.Invoke(context, e, ProblemDetailsFactory.Default);
+                    var errorDetails = _options.ExceptionHandler?.Invoke(context, e, (_options.Factory ?? ProblemDetailsFactory.Default));
                     if (errorDetails == null) {
                         // No problem details provided; rethrow the exception.
                         throw;
                     }
 
+                    if (errorDetails.Status.HasValue) {
+                        response.StatusCode = errorDetails.Status.Value;
+                    };
                     await WriteProblemDetailsToStream(errorDetails, response, responseBodyStream).ConfigureAwait(false);
                 }
                 finally {

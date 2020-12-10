@@ -23,6 +23,12 @@ namespace IntelligentPlant.ProblemDetails.Owin {
         public IEnumerable<PathString>? ExcludePaths { get; set; }
 
         /// <summary>
+        /// The <see cref="ProblemDetailsFactory"/> to use to create problem details objects. 
+        /// Specify <see langword="null"/> to use <see cref="ProblemDetailsFactory.Default"/>.
+        /// </summary>
+        public ProblemDetailsFactory? Factory { get; set; }
+
+        /// <summary>
         /// A delegate that can be used to generate a custom <see cref="ProblemDetails"/> object 
         /// for an unhandled exception in the OWIN pipeline. Return <see langword="null"/> to 
         /// rethrow the unhandled exception.
