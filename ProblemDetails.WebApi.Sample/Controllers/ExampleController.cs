@@ -60,7 +60,7 @@ namespace ProblemDetails.WebApi.Sample.Controllers {
         [HttpGet]
         [Route("create-direct")]
         public IHttpActionResult CreateDirect() {
-            return this.CreateProblemDetailsResponse(HttpStatusCode.BadRequest, detail: "Problem details was directly created");
+            return this.CreateProblemDetailsResponse(HttpStatusCode.Forbidden, detail: "Problem details was directly created");
         }
 
 

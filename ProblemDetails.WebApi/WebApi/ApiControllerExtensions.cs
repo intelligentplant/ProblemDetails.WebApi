@@ -513,7 +513,7 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
                 detail
             );
             var response = request.CreateResponse(
-                HttpStatusCode.BadRequest, 
+                statusCode,
                 problemDetails,
                 new JsonMediaTypeFormatter(),
                 ClientErrorDataDefaults.MediaType

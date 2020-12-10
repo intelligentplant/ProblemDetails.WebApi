@@ -93,9 +93,6 @@ namespace IntelligentPlant.ProblemDetails.Owin {
                         throw;
                     }
 
-                    if (errorDetails.Status.HasValue) {
-                        response.StatusCode = errorDetails.Status.Value;
-                    };
                     await WriteProblemDetailsToStream(errorDetails, response, responseBodyStream).ConfigureAwait(false);
                 }
                 finally {
@@ -129,6 +126,12 @@ namespace IntelligentPlant.ProblemDetails.Owin {
         ///   A <see cref="Task"/> that will perform the write.
         /// </returns>
         private async Task WriteProblemDetailsToStream(ProblemDetails problemDetails, IOwinResponse response, Stream stream) {
+            // Set response status code
+            if (problemDetails.Status.HasValue)
+            {
+                response.StatusCode = problemDetails.Status.Value;
+            };
+
             // Create a new buffer, and then create and serialize a problem details object 
             // into the new buffer.
             using (var ms = new MemoryStream()) {
