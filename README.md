@@ -8,6 +8,11 @@ Adds [RFC 7807](https://tools.ietf.org/html/rfc7807) support to ASP.NET 4.x Web 
 Add a reference to the [IntelligentPlant.ProblemDetails.WebApi](https://www.nuget.org/packages/IntelligentPlant.ProblemDetails.WebApi) NuGet package.
 
 
+## Examples
+
+An example self-hosted application can be found [here](/ProblemDetails.WebApi.Sample).
+
+
 ## Configuration
 
 To add support for all Web API controller actions via global action and exception filters on a `System.Web.Http.HttpConfiguration` object, use the `AddProblemDetails` extension method:
@@ -91,8 +96,47 @@ private static ProblemDetails? ProblemDetailsErrorHandler(IOwinContext context, 
         return factory.CreateProblemDetails(context, 403);
     }
 
+    // - handling for other exceptions here -
+
     // Return null to rethrow the unhandled exception.
     return null;
 }
 
+```
+
+
+## Handling Web API Exceptions in the OWIN Pipeline
+
+By default, Web API ensures that all unhandled exception in the Web API pipeline are handled using its `IExceptionHandler` service. However, you may wish to handle Web API exceptions directly in the OWIN pipeline, so that all unhandled application errors pass through the same set of OWIN middleware prior to generating a problem details response for an API call.
+
+You can disable Web API exception handling completely when registering the Web API problem details configuration with the Web API configuration:
+
+```csharp
+public void Configuration(IAppBuilder app) {
+    // We only want to return a problem details response on API routes.
+    app.UseProblemDetails(new ProblemDetailsMiddlewareOptions() {
+        IncludePaths = new [] {
+            new PathString("/api")
+        },
+        ExceptionHandler = ProblemDetailsErrorHandler
+    });
+
+    var config = new HttpConfiguration();
+    config.AddProblemDetails(handleExceptions: false);
+    config.MapHttpAttributeRoutes();
+
+    app.UseWebApi(config);
+}
+
+
+private static ProblemDetails? ProblemDetailsErrorHandler(IOwinContext context, Exception error, ProblemDetailsFactory factory) {
+    if (error is System.Security.SecurityException) {
+        return factory.CreateProblemDetails(context, 403);
+    }
+
+    // - handling for other exceptions here -
+
+    // Return null to rethrow the unhandled exception.
+    return null;
+}
 ```
