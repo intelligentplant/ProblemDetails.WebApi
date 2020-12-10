@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Intelligent Plant Ltd. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using IntelligentPlant.ProblemDetails;
 using IntelligentPlant.ProblemDetails.WebApi;
 
 namespace System.Web.Http {
@@ -35,21 +36,25 @@ namespace System.Web.Http {
         /// </para>
         /// 
         /// </param>
+        /// <param name="factory">
+        ///   The <see cref="ProblemDetailsFactory"/> to use. Specify <see langword="null"/> to 
+        ///   use <see cref="ProblemDetailsFactory.Default"/>.
+        /// </param>
         /// <exception cref="ArgumentNullException">
         ///   <paramref name="httpConfiguration"/> is <see langword="null"/>.
         /// </exception>
-        public static void AddProblemDetails(this HttpConfiguration httpConfiguration, bool handleExceptions = true) {
+        public static void AddProblemDetails(this HttpConfiguration httpConfiguration, bool handleExceptions = true, ProblemDetailsFactory? factory = null) {
             if (httpConfiguration == null) {
                 throw new ArgumentNullException(nameof(httpConfiguration));
             }
 
             if (handleExceptions) {
-                httpConfiguration.Filters.Add(new ProblemDetailsErrorFilterAttribute());
+                httpConfiguration.Filters.Add(new ProblemDetailsErrorFilterAttribute(factory));
             }
             else {
                 httpConfiguration.Services.Replace(typeof(ExceptionHandling.IExceptionHandler), new RethrowErrorExceptionHandler());
             }
-            httpConfiguration.Filters.Add(new ProblemDetailsActionFilterAttribute());
+            httpConfiguration.Filters.Add(new ProblemDetailsActionFilterAttribute(factory));
         }
 
     }

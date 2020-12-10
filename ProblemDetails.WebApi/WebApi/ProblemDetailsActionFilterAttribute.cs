@@ -17,7 +17,19 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
         /// <summary>
         /// The <see cref="ProblemDetailsFactory"/> to use.
         /// </summary>
-        private readonly ProblemDetailsFactory _factory = ProblemDetailsFactory.Default;
+        private readonly ProblemDetailsFactory _factory;
+
+
+        /// <summary>
+        /// Creates a new <see cref="ProblemDetailsActionFilterAttribute"/> instance.
+        /// </summary>
+        /// <param name="factory">
+        ///   The <see cref="ProblemDetailsFactory"/> to use. Specify <see langword="null"/> to 
+        ///   use <see cref="ProblemDetailsFactory.Default"/>.
+        /// </param>
+        public ProblemDetailsActionFilterAttribute(ProblemDetailsFactory? factory = null) {
+            _factory = factory ?? ProblemDetailsFactory.Default;
+        }
 
 
         /// <inheritdoc/>

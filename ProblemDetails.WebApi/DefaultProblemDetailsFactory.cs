@@ -14,7 +14,7 @@ namespace IntelligentPlant.ProblemDetails {
     /// <summary>
     /// Default <see cref="ProblemDetailsFactory"/> implementation.
     /// </summary>
-    internal sealed class DefaultProblemDetailsFactory : ProblemDetailsFactory {
+    public class DefaultProblemDetailsFactory : ProblemDetailsFactory {
 
         /// <inheritdoc/>
         public override ProblemDetails CreateProblemDetails(
