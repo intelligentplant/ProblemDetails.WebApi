@@ -160,6 +160,7 @@ public void Configuration(IAppBuilder app) {
     });
 
     var config = new HttpConfiguration();
+    config.AddProblemDetails();
     config.MapHttpAttributeRoutes();
 
     app.UseWebApi(config);
