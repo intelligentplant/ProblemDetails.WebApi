@@ -149,8 +149,9 @@ private static ProblemDetails? ProblemDetailsErrorHandler(IOwinContext context, 
 ```csharp
 public void Configuration(IAppBuilder app) {
     ProblemDetailsFactory.Default.OnDetailsCreated = (context, details) => {
-        // Add this property to every detail
+        // Add these properties to every problem detail.
         details.Extensions["callback-added"] = "some-value";
+        details.Extensions["utc-time"] = DateTime.UtcNow.ToString("u");
     };
 
     app.UseProblemDetails(new ProblemDetailsMiddlewareOptions() {
@@ -164,5 +165,19 @@ public void Configuration(IAppBuilder app) {
     config.MapHttpAttributeRoutes();
 
     app.UseWebApi(config);
+}
+```
+
+Note that, rather than adding an `extensions` property to the problem details JSON representation, the JSON.NET serializer will add a new property to the JSON object for each entry in the `Extensions` dictionary on the `ProblemDetails` instance e.g.
+
+```json
+{
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.3",
+  "title": "Forbidden",
+  "status": 403,
+  "detail": null,
+  "instance": "/api/delete-item/1",
+  "callback-added": "some-value",
+  "utc-time": "2020-12-11 07:20:00Z"
 }
 ```
