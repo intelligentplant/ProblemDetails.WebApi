@@ -22,6 +22,10 @@ namespace IntelligentPlant.ProblemDetails {
         /// </summary>
         internal static ProblemDetailsFactory Default { get; } = new DefaultProblemDetailsFactory();
 
+        /// <summary>
+        /// Gets a callback that can be used to transform a created <see cref="ProblemDetails"/> instance before it is written to the reponse.
+        /// </summary>
+        public virtual Action<IOwinContext, ProblemDetails>? OnDetailsCreated { get; set; } = (context, details) => { };
 
         /// <summary>
         /// Creates a <see cref="ProblemDetails"/> instance that configures defaults based on 

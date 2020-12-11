@@ -17,6 +17,10 @@ namespace ProblemDetails.WebApi.Sample {
         public void Configuration(IAppBuilder app) {
             var customFactory = new CustomProblemDetailsFactory();
 
+            customFactory.OnDetailsCreated = (context, details) => {
+                details.Extensions["callback-added"] = "some-value";
+            };
+
             app.UseProblemDetails(new IntelligentPlant.ProblemDetails.Owin.ProblemDetailsMiddlewareOptions() {
                 IncludePaths = new[] { new PathString("/") },
                 Factory = customFactory,

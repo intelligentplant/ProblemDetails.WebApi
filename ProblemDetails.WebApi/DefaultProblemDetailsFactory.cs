@@ -207,6 +207,8 @@ namespace IntelligentPlant.ProblemDetails {
                 problemDetails.Title ??= clientErrorData.Title;
                 problemDetails.Type ??= clientErrorData.Link;
             }
+
+            OnDetailsCreated?.Invoke(httpContext, problemDetails);
         }
     }
 }
