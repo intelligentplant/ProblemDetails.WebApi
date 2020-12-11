@@ -142,7 +142,7 @@ private static ProblemDetails? ProblemDetailsErrorHandler(IOwinContext context, 
 ```
 
 
-## Transform Problem Details via Callback
+## Transforming Problem Details via Callback
 
 `ProblemDetailsFactory` defines an `OnDetailsCreated` callback that will be invoked whenever the factory creates a problem details instance. You can use this callback to e.g. add custom properties to your problem details objects.
 
