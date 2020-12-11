@@ -141,19 +141,21 @@ private static ProblemDetails? ProblemDetailsErrorHandler(IOwinContext context, 
 }
 ```
 
-## Add additional properties via callback
 
-You can add additional properties to a created `ProblemDetail` by using the `OnDetailsCreated` callback.
+## Transform Problem Details via Callback
+
+`ProblemDetailsFactory` defines an `OnDetailsCreated` callback that will be invoked whenever the factory creates a problem details instance. You can use this callback to e.g. add custom properties to your problem details objects.
 
 ```csharp
 public void Configuration(IAppBuilder app) {
+    ProblemDetailsFactory.Default.OnDetailsCreated = (context, details) => {
+        // Add this property to every detail
+        details.Extensions["callback-added"] = "some-value";
+    };
+
     app.UseProblemDetails(new ProblemDetailsMiddlewareOptions() {
         IncludePaths = new [] {
             new PathString("/api")
-        },
-        OnDetailsCreated = (context, details) => {
-            // Add this property to every detail
-            details.Extensions["callback-added"] = "some-value";
         }
     });
 

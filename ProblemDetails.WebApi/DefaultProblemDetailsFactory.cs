@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Copyright (c) Intelligent Plant Ltd. All rights reserved.
+// Copyright (c) Other contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -183,32 +184,5 @@ namespace IntelligentPlant.ProblemDetails {
             ApplyProblemDetailsDefaults(httpContext, problemDetails, statusCode.Value);
         }
 
-
-        /// <summary>
-        /// Applies default settings to a <see cref="ProblemDetails"/> instance.
-        /// </summary>
-        /// <param name="httpContext">
-        ///   The HTTP context.
-        /// </param>
-        /// <param name="problemDetails">
-        ///   The <see cref="ProblemDetails"/> instance.
-        /// </param>
-        /// <param name="statusCode">
-        ///   The status code to use when looking up default values for the error type.
-        /// </param>
-        private void ApplyProblemDetailsDefaults(IOwinContext httpContext, ProblemDetails problemDetails, int statusCode) {
-            problemDetails.Status ??= statusCode;
-            problemDetails.Instance ??= string.Concat(httpContext.Request.PathBase, httpContext.Request.Path);
-
-            var clientErrorMapping = new Dictionary<int, ClientErrorData>();
-            ClientErrorDataDefaults.ApplyDefaults(clientErrorMapping);
-
-            if (clientErrorMapping.TryGetValue(statusCode, out var clientErrorData)) {
-                problemDetails.Title ??= clientErrorData.Title;
-                problemDetails.Type ??= clientErrorData.Link;
-            }
-
-            OnDetailsCreated?.Invoke(httpContext, problemDetails);
-        }
     }
 }

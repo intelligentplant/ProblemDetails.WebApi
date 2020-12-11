@@ -1,5 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Copyright (c) Intelligent Plant Ltd. All rights reserved.
+// Copyright (c) Other contributors. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -20,12 +21,14 @@ namespace IntelligentPlant.ProblemDetails {
         /// <summary>
         /// Default <see cref="ProblemDetailsFactory"/> instance.
         /// </summary>
-        internal static ProblemDetailsFactory Default { get; } = new DefaultProblemDetailsFactory();
+        public static ProblemDetailsFactory Default { get; } = new DefaultProblemDetailsFactory();
 
         /// <summary>
-        /// Gets a callback that can be used to transform a created <see cref="ProblemDetails"/> instance before it is written to the reponse.
+        /// A callback that can be used to transform a created <see cref="ProblemDetails"/> 
+        /// instance after it has been created by the factory.
         /// </summary>
-        public virtual Action<IOwinContext, ProblemDetails>? OnDetailsCreated { get; set; } = (context, details) => { };
+        public virtual Action<IOwinContext, ProblemDetails>? OnDetailsCreated { get; set; }
+
 
         /// <summary>
         /// Creates a <see cref="ProblemDetails"/> instance that configures defaults based on 
@@ -218,6 +221,34 @@ namespace IntelligentPlant.ProblemDetails {
             string? detail = null,
             string? instance = null
         );
+
+
+        /// <summary>
+        /// Applies default settings to a <see cref="ProblemDetails"/> instance.
+        /// </summary>
+        /// <param name="httpContext">
+        ///   The HTTP context.
+        /// </param>
+        /// <param name="problemDetails">
+        ///   The <see cref="ProblemDetails"/> instance.
+        /// </param>
+        /// <param name="statusCode">
+        ///   The status code to use when looking up default values for the error type.
+        /// </param>
+        protected void ApplyProblemDetailsDefaults(IOwinContext httpContext, ProblemDetails problemDetails, int statusCode) {
+            problemDetails.Status ??= statusCode;
+            problemDetails.Instance ??= string.Concat(httpContext.Request.PathBase, httpContext.Request.Path);
+
+            var clientErrorMapping = new Dictionary<int, ClientErrorData>();
+            ClientErrorDataDefaults.ApplyDefaults(clientErrorMapping);
+
+            if (clientErrorMapping.TryGetValue(statusCode, out var clientErrorData)) {
+                problemDetails.Title ??= clientErrorData.Title;
+                problemDetails.Type ??= clientErrorData.Link;
+            }
+
+            OnDetailsCreated?.Invoke(httpContext, problemDetails);
+        }
 
     }
 }

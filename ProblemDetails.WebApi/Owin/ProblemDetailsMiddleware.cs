@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Intelligent Plant Ltd. All rights reserved.
+// Copyright (c) Other contributors. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -127,8 +131,7 @@ namespace IntelligentPlant.ProblemDetails.Owin {
         /// </returns>
         private async Task WriteProblemDetailsToStream(ProblemDetails problemDetails, IOwinResponse response, Stream stream) {
             // Set response status code
-            if (problemDetails.Status.HasValue)
-            {
+            if (problemDetails.Status.HasValue) {
                 response.StatusCode = problemDetails.Status.Value;
             };
 
