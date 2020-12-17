@@ -1,0 +1,41 @@
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <Authors>Intelligent Plant</Authors>
+    <Company>Intelligent Plant Ltd.</Company>
+    <PackageProjectUrl>https://github.com/intelligentplant/ProblemDetails.WebApi</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Version>3.0.0</Version>
+  </PropertyGroup>
+
+  <Choose>
+    <When Condition=" $([System.DateTime]::UtcNow.Year) &gt; 2020 ">
+      <PropertyGroup>
+        <Copyright>Copyright © 2020-$([System.DateTime]::UtcNow.Year) $(Company)</Copyright>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <Copyright>Copyright © 2020 $(Company)</Copyright>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
+  <PropertyGroup>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  
+</Project>

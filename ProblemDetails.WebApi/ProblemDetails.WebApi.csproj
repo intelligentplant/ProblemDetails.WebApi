@@ -4,45 +4,17 @@
     <TargetFrameworks>net45;net46</TargetFrameworks>
     <AssemblyName>IntelligentPlant.ProblemDetails.WebApi</AssemblyName>
     <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-    <Authors>Intelligent Plant</Authors>
-    <Company>Intelligent Plant Ltd.</Company>
     <PackageId>IntelligentPlant.ProblemDetails.WebApi</PackageId>
-    <PackageProjectUrl>https://github.com/intelligentplant/ProblemDetails.WebApi</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Version>2.2.0</Version>
-  </PropertyGroup>
-
-  <Choose>
-    <When Condition=" $([System.DateTime]::UtcNow.Year) &gt; 2020 ">
-      <PropertyGroup>
-        <Copyright>Copyright © 2020-$([System.DateTime]::UtcNow.Year) $(Company)</Copyright>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <Copyright>Copyright © 2020 $(Company)</Copyright>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
-
-  <PropertyGroup>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProblemDetails.Core\ProblemDetails.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

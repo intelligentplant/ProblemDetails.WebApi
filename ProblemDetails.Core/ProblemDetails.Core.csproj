@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>
+    <AssemblyName>IntelligentPlant.ProblemDetails.Core</AssemblyName>
+    <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
+    <PackageId>IntelligentPlant.ProblemDetails.Core</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+</Project>
