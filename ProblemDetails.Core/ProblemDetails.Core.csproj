@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>IntelligentPlant.ProblemDetails.Core</AssemblyName>
     <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
     <PackageId>IntelligentPlant.ProblemDetails.Core</PackageId>
