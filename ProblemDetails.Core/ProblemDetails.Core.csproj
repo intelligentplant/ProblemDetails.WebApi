@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>
     <AssemblyName>IntelligentPlant.ProblemDetails.Core</AssemblyName>
     <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
     <PackageId>IntelligentPlant.ProblemDetails.Core</PackageId>
+    <Description>Core types for RFC 7807 problem details.</Description>
   </PropertyGroup>
 
   <ItemGroup>

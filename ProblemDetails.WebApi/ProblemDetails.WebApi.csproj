@@ -5,6 +5,7 @@
     <AssemblyName>IntelligentPlant.ProblemDetails.WebApi</AssemblyName>
     <RootNamespace>IntelligentPlant.ProblemDetails</RootNamespace>
     <PackageId>IntelligentPlant.ProblemDetails.WebApi</PackageId>
+    <Description>Web API 2/OWIN support for RFC 7807 problem details.</Description>
   </PropertyGroup>
 
   <ItemGroup>
