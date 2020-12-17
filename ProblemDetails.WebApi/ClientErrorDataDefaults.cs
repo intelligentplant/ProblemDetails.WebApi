@@ -15,7 +15,7 @@ namespace IntelligentPlant.ProblemDetails {
         /// <summary>
         /// Media type to use for problem details.
         /// </summary>
-        internal const string MediaType = "application/problem+json";
+        internal const string MediaType = Constants.MediaType;
 
 
         /// <summary>
