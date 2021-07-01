@@ -58,6 +58,16 @@ namespace IntelligentPlant.ProblemDetails.WebApi {
                 return;
             }
 
+            if (actionExecutedContext.Response!.StatusCode == System.Net.HttpStatusCode.BadRequest && !actionExecutedContext.ActionContext.ModelState.IsValid) {
+                // The model state has been invalidated since OnActionExecuting ran (possibly by
+                // another action filter or by the controller itself). 
+                actionExecutedContext.Response = actionExecutedContext.Request.CreateValidationProblemDetailsResponse(
+                    actionExecutedContext.ActionContext.ModelState, 
+                    _factory
+                );
+                return;
+            }
+
             string? detail = null;
 
             if (actionExecutedContext.Response?.Content is ObjectContent oc) {

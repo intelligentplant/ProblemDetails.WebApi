@@ -6,20 +6,36 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 namespace ProblemDetails.WebApi.Sample {
     public class Program {
 
         public static async Task Main() {
-            using (var host = Microsoft.Owin.Hosting.WebApp.Start<Startup>("http://localhost:5000")) {
-                var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            await new HostBuilder().ConfigureServices(services => {
+                services.AddHostedService<OwinWebHost>();
+            }).RunConsoleAsync().ConfigureAwait(false);
+        }
 
-                Console.CancelKeyPress += (sender, args) => {
-                    tcs.TrySetResult(true);
-                };
 
+        private class OwinWebHost : IHostedService {
+
+            private IDisposable? _webHost; 
+
+            public Task StartAsync(CancellationToken cancellationToken) {
+                const string url = "http://localhost:5000";
+                _webHost ??= Microsoft.Owin.Hosting.WebApp.Start<Startup>(url);
+                
+                Console.WriteLine($"Listening on: {url}");
                 Console.WriteLine("Press CTRL+C to exit");
 
-                await tcs.Task.ConfigureAwait(false);
+                return Task.CompletedTask;
+            }
+
+            public Task StopAsync(CancellationToken cancellationToken) {
+                _webHost?.Dispose();
+                return Task.CompletedTask;
             }
         }
 

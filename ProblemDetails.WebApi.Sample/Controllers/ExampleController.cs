@@ -104,6 +104,14 @@ namespace ProblemDetails.WebApi.Sample.Controllers {
             return Ok();
         }
 
+
+        [HttpGet]
+        [Route("create-from-model-state")]
+        public IHttpActionResult CreateFromModelStateDictionary() {
+            ModelState.AddModelError("model", "Model has invalid state");
+            return BadRequest();
+        }
+
     }
 
 
